@@ -18,6 +18,15 @@ const productSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Product_Category",
       required: type,
+      validate: {
+        validator: async function (value) {
+          const category = await mongoose
+            .model("Product_Category")
+            .findById(value);
+          return category !== null;
+        },
+        message: "Invalid category ID",
+      },
     },
     inventory_id: {
       type: mongoose.Schema.Types.ObjectId,
